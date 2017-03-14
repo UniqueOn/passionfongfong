@@ -4,14 +4,26 @@
 <meta charset="EUC-KR">
 <title>회원가입::</title>
 </head>
+{{> /include/header}}
 <body>
 <h2>회원가입Page::</h2><hr>
 	<form action="/user/join" method="post">
 		<input type="text" id="userId" name="userId" placeholder="ID" autofocus="autofocus">
 		<input type="password" id="password" name="password" placeholder="비밀번호" >
-		<input type="password" id="matchPw" >
+		<input type="password" id="matchPw" ><span id="matchPwOut"></span>
 		<input type="text" id="userName" name="userName" placeholder="이름">
 		<button type="submit" id="joinBtn">회원가입</button>
 	</form>
 </body>
+<script type="text/javascript">
+	$('#matchPw').keyup(function() {
+		var password = $('#password').val();
+		var matchPw = $('#matchPw').val();
+		
+		if(password === matchPw)
+			$('#matchPwOut').html('<font color="blue">비밀번호가 일치합니다</font>');
+		else
+			$('#matchPwOut').html('<font color="red">비밀번호가 일치하지 않습니다</font>');
+	});
+</script>
 </html>
