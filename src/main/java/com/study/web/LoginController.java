@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.study.Utils.HttpSessionUtils;
 import com.study.domain.User;
 import com.study.domain.UserRepository;
 
@@ -30,6 +31,23 @@ public class LoginController {
 	public String login(String userId, String password, HttpSession httpSession) {
 		log.debug("-----User : " + userId);
 		
+		try{
+			if(userId.equals(null) || password.equals(null)) {
+				log.error("-----null value Exists");
+				return "redirect:/";
+			}
+			
+			User getUser = userRepository.findByUserId(userId);
+			if(getUser == null)
+				return "/exception/defaulterrorinfo";
+			
+			if(!getUser.isMatchPassword(password))
+				return "redirect:/";
+			
+			httpSession.setAttribute(HttpSessionUtils.USER_SESSION_KEY, getUser);
+		} catch (Exception e) {
+			return "/exception/defaulterrorinfo";
+		}
 		
 		return "redirect:/";
 	}
